@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+/* Manual Gtters and Setters */
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
