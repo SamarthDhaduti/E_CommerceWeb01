@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+/* we made it as an interface because lot of other class can implement this */
+
 public interface ProductService {
 
     List<Product> getAllProducts();

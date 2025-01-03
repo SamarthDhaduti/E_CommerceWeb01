@@ -3,6 +3,8 @@ package com.example.e_commerceweb01.dtos;
 import com.example.e_commerceweb01.Models.Category;
 import com.example.e_commerceweb01.Models.Product;;
 
+/* This FakeStoreProductDto helps us to get the data from the third party */
+
 public class FakeStoreProductDto {
     private String title;
     private String description;
@@ -50,6 +52,7 @@ public class FakeStoreProductDto {
         this.price = price;
     }
 
+    /* here we are converting the output came by FakeStore into our Product Format */
     public Product toProduct(){
         Product product = new Product();
         product.setTitle(title);

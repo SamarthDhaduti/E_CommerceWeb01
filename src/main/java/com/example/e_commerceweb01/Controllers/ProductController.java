@@ -10,6 +10,9 @@ import java.util.List;
 @RestController
 public class ProductController {
 
+    /* need an instance of service class inside the controller class so that it can call the service class
+    when a request comes
+     */
     public ProductService productService;
 
     public ProductController(ProductService productService) {

@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public class FakeStoreProductService implements ProductService{
 
+    /* creating the instance of RestTemplate to work with 3rd Party API */
+
     private RestTemplate restTemplate ; //using this, you will be able to call 3rd party apis
 
     public FakeStoreProductService(RestTemplate restTemplate){
@@ -19,16 +21,19 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return null;
     }
 
     /* call the external API to get single product
        https://fakestoreapi.com/products/1
+
+       here we are creating object of FakeStoreProductDto because from here data will send to FakeStoreProductDto
+       as an object and convert to Product and return to controller
      */
     @Override
     public Product getSinleProduct(long id) {
        FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
-        return FakeStoreProductDto.toProduct();
+        return fakeStoreProductDto.toProduct();
     }
 
     @Override

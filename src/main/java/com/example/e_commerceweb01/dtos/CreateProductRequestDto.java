@@ -2,6 +2,7 @@ package com.example.e_commerceweb01.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
+/* this is to send request body to APIs */
 
 public class CreateProductRequestDto {
     private String title;
