@@ -3,13 +3,16 @@ package com.example.e_commerceweb01.Services;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
 import com.example.e_commerceweb01.dtos.FakeStoreProductDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
 
     /* creating the instance of RestTemplate to work with 3rd Party API */
@@ -42,7 +45,26 @@ public class FakeStoreProductService implements ProductService{
      */
     @Override
     public Product getSinleProduct(long id) {
-       FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
+        /* This will return only the data object without any additional info */
+//       FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
+//        return fakeStoreProductDto.toProduct();
+
+        /* Now we will see Response entity which will contain additional info such as status code, Header etc.. */
+        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/"+ id ,  FakeStoreProductDto.class);
+
+//        if(fakeStoreProductDtoResponseEntity.getStatusCode() != HttpStatus.valueOf(200)){
+//            // Handel this exception
+//        }
+
+        //fakeStoreProductDtoResponseEntity.getHeaders();
+
+        /* this will get the body along with data into fakeStoreProductDto object */
+        FakeStoreProductDto fakeStoreProductDto = fakeStoreProductDtoResponseEntity.getBody();
+
+        if(fakeStoreProductDto == null){
+            return null;
+        }
+
         return fakeStoreProductDto.toProduct();
     }
 

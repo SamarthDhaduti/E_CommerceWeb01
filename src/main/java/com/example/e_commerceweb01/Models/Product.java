@@ -1,66 +1,48 @@
 package com.example.e_commerceweb01.Models;
 
+import ch.qos.logback.core.model.Model;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/* Manual Getters and Setters */
+/* You can use @Data also instead of Getter and Setter */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
-    private int id;
+@Entity
+public class Product extends BaseModel {
     private String title;
     private String description;
     private double price;
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private Category category;
     private String imageUrl;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+/*
+Product Category
+Relation = Cardinality
 
-    public String getTitle() {
-        return title;
-    }
+Product Category
+1       1
+M        1
+P : C
+M : 1
+are you defining a fk constraint?
+Category_id = act like a foreign key in the product table
+fk constraints
+when you delete a product, what do you want to do with that category?
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+1 1
 
-    public String getDescription() {
-        return description;
-    }
+In your product table, will you have a category id column?
+ */
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public double getPrice() {
-        return price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 }

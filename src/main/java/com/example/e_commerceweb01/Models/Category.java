@@ -1,30 +1,28 @@
 package com.example.e_commerceweb01.Models;
 
+import ch.qos.logback.core.model.Model;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/* Manual Gtters and Setters */
+import java.util.List;
+
+
+/* You can use @Data also instead of Getter and Setter */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
-    private int id;
+@Entity
+public class Category extends BaseModel {
     private String title;
 
-    public int getId() {
-        return id;
-    }
+    //duplicate relation(already mentioned in product class)
+    @OneToMany (mappedBy = "category", cascade = {CascadeType.REMOVE})
+    private List<Product> products;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
