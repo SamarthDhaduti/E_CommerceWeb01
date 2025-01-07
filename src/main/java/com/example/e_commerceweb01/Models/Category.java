@@ -1,6 +1,7 @@
 package com.example.e_commerceweb01.Models;
 
 import ch.qos.logback.core.model.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -23,6 +24,8 @@ public class Category extends BaseModel {
 
     //duplicate relation(already mentioned in product class)
     @OneToMany (mappedBy = "category", cascade = {CascadeType.REMOVE})
+    /* This @JsonIgnore helps to avoid looping in output */
+    @JsonIgnore
     private List<Product> products;
 
 }

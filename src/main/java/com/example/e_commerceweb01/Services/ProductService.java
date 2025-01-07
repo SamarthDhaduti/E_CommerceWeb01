@@ -1,5 +1,6 @@
 package com.example.e_commerceweb01.Services;
 
+import com.example.e_commerceweb01.Exception.ProductNotFoundException;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-    Product getSinleProduct(long id);
+    Product getSinleProduct(long id) throws ProductNotFoundException;
 
     /*Here in service we shouldn't pass DTOs directly because they may change frequently so pass request body */
     Product createProduct(String title,

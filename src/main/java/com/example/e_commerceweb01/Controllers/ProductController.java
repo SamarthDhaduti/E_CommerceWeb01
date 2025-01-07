@@ -1,5 +1,6 @@
 package com.example.e_commerceweb01.Controllers;
 
+import com.example.e_commerceweb01.Exception.ProductNotFoundException;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.Services.ProductService;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
@@ -39,7 +40,7 @@ public class ProductController {
     GET /products/{id}
      */
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getSinleProduct(@PathVariable("id") long id){
+    public ResponseEntity<Product> getSinleProduct(@PathVariable("id") long id) throws ProductNotFoundException {
 
         /* Now we have to return the ResponseEntity so get the product from the service */
         Product p = productService.getSinleProduct(id);
@@ -53,6 +54,7 @@ public class ProductController {
             responseEntity = new ResponseEntity<>(p, HttpStatus.OK);
         }
         return responseEntity;
+
     }
 
     /*
@@ -65,9 +67,14 @@ public class ProductController {
     } => payload / request body
     POST /products
      */
+    /* Here actually when a user send a request to create a product returning that product object is not recommended
+    because the info about that product is going to be stored inside the DB so there are chances of leaking
+    confidential info, so create one more DTO ResponseDto and convert the returned product and send back the
+    object of DTO with only needed info
+     */
     @PostMapping("/products")
      public Product createProduct(@RequestBody CreateProductRequestDto createProductRequestDto){
-        /* Here while calling the service class we have to pass the request body coming from out side
+        /* Here while calling the service class we have to pass the request body as an object coming from out side
         because service class doesn't directly interact with outside but controller will interact so take
         request body through CreateProductRequestDto.
          */
