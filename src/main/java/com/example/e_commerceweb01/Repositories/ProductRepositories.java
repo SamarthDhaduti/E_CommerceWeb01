@@ -1,7 +1,11 @@
 package com.example.e_commerceweb01.Repositories;
 
+import com.example.e_commerceweb01.Models.Category;
 import com.example.e_commerceweb01.Models.Product;
+import com.example.e_commerceweb01.Projections.ProductWithIdAndPriceProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +31,39 @@ public interface ProductRepositories extends JpaRepository<Product, Long> {
 
     @Override
     Optional<Product> findById(Long id);
+
+    /* some more JPA query methods */
+    List<Product> findByCategory(Category category);
+
+    /* Here in the above method we are passing whole category object to get the list of products
+    associated with that Category but Will you always have the entire category object when you
+    want to fetch all products with an associated category
+     */
+
+    /* just use title of category to */
+    List<Product> findByCategory_Title(String title);
+
+    /* using category id */
+    List<Product> findByCategory_Id(long id);
+
+     /*
+    We don't have complete control over the query that JPA will execute for us?
+
+    I am interested only in certain columns not on all the attributes of the table, I can provide the query
+    with required attributes, Here the Custom Queries comes in to picture.
+
+    There are two types of Custom queries that JPA can be done:
+    1.HQL - Similar to SQL but with a small pinch of OOP.(Hibernate Query Language)
+    2.Native SQL queries
+
+    But to use custom queries we need "Projections" an interface which contains only getter methods
+     */
+
+    /* HQL method */
+    @Query("select p.id, p.price from Product p where p.category.title = :categoryName")
+    List<ProductWithIdAndPriceProjection> getProductTitlesAndPricesAndAGivenCategoryName(@Param("categoryName") String categoryName);
+
+    /* Native SQL Query */
+     @Query(value = "select * from products p where p.title = :title", nativeQuery = true)
+    List<ProductWithIdAndPriceProjection> getIdAndPricesOfAllProductsWithGivenTitle(@Param("title") String title);
 }
