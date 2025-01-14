@@ -5,6 +5,7 @@ import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.Services.ProductService;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -83,5 +84,16 @@ public class ProductController {
                  createProductRequestDto.getDescription(),
                  createProductRequestDto.getImage(),
                  createProductRequestDto.getCategory());
+     }
+
+     @GetMapping("/products/paginated")
+         /* accept filter params which you're going to provide to the service, here we can't send thr request body
+         int GET method so passing the Request Parameter
+          */
+        /* should i return page of prod or list of prod to the frontend??
+         we have to send actually list of products because frontend doesn't know about the page
+         please explore how to convert Page<T> to List<T> - HW */
+     Page<Product> getPaginatedProducts(@RequestParam("pageNo") int pageNo, @RequestParam("pageSize") int pageSize){
+         return productService.getPaginatedProducts(pageNo, pageSize);
      }
 }

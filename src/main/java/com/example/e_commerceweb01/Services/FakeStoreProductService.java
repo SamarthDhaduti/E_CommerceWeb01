@@ -3,6 +3,7 @@ package com.example.e_commerceweb01.Services;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
 import com.example.e_commerceweb01.dtos.FakeStoreProductDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -93,5 +94,10 @@ public class FakeStoreProductService implements ProductService{
         POST /products actually doesn't create a new object in the fakestore
         It's just a dummy api, it does nothing
          */
+    }
+
+    @Override
+    public Page<Product> getPaginatedProducts(int pageNo, int pageSize) {
+        return null;
     }
 }

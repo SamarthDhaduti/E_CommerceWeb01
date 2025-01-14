@@ -5,6 +5,9 @@ import com.example.e_commerceweb01.Models.Category;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.Repositories.CategoryRepository;
 import com.example.e_commerceweb01.Repositories.ProductRepositories;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -78,5 +81,20 @@ public class SelfProductService implements ProductService {
 
         return savedProduct;
 
+    }
+
+    @Override
+    public Page<Product> getPaginatedProducts(int pageNo, int pageSize) {//controller class will give pageNo and pageSize
+        //Pageable was an interface
+        //PageRequest class which extends Pageable
+        //I can pass an object of PageRequest class in the place of pageable param inside findAll
+        //Animal <--- Dog (Animal animal = new Dog())
+        //Pageable <--- PageRequest
+        //.of will return an another object of Pagerequest
+        return productRepositories.findAll(PageRequest.of(pageNo,
+                                                          pageSize,
+                Sort.by("price").descending()));
+
+        /* Sort.by("title").descending().and(Sort.by("price").ascending()) we can sort based on multiple parameters also */
     }
 }

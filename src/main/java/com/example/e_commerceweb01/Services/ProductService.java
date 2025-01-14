@@ -3,6 +3,8 @@ package com.example.e_commerceweb01.Services;
 import com.example.e_commerceweb01.Exception.ProductNotFoundException;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public interface ProductService {
                           String imageUrl,
                           String category);
 
-
+    /* Page is an interface */
+    Page<Product> getPaginatedProducts(int pageNo, int pageSize);
 
 }

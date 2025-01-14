@@ -3,6 +3,8 @@ package com.example.e_commerceweb01.Repositories;
 import com.example.e_commerceweb01.Models.Category;
 import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.Projections.ProductWithIdAndPriceProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +23,14 @@ public interface ProductRepositories extends JpaRepository<Product, Long> {
     /* findAll() is a JPA query method */
     @Override
     List<Product> findAll();
+
+    @Override
+    Page<Product> findAll(Pageable pageable);
+     //pageNo, pageSize - data will given from the fronted
+    //from which limit and which offset you need to fetch?
+    //pageNo = 20, pageSize = 25
+    //pageNo starts from 0, 20*25 = 500 retrieved earlier
+    //20th page will show 501th to 526th products
 
     /* helps to save the product in to DB */
     Product save(Product p);
