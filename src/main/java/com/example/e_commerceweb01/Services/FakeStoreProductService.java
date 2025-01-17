@@ -4,6 +4,7 @@ import com.example.e_commerceweb01.Models.Product;
 import com.example.e_commerceweb01.dtos.CreateProductRequestDto;
 import com.example.e_commerceweb01.dtos.FakeStoreProductDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,11 @@ public class FakeStoreProductService implements ProductService{
 
     private RestTemplate restTemplate ; //using this, you will be able to call 3rd party apis
 
-    public FakeStoreProductService(RestTemplate restTemplate){
+    private RedisTemplate redisTemplate;
+
+    public FakeStoreProductService(RestTemplate restTemplate, RedisTemplate redisTemplate) {
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -46,6 +50,17 @@ public class FakeStoreProductService implements ProductService{
      */
     @Override
     public Product getSinleProduct(long id) {
+
+        Product cachedProduct = (Product) redisTemplate.opsForHash().get("Products", "Products_" + id);//Products, Products_1
+        /*
+        Check for the product with this id in the cache??
+        if present, return, else go to db and fetch
+         */
+        //Cache HIT
+        if(cachedProduct != null){
+            return cachedProduct;
+        }
+
         /* This will return only the data object without any additional info */
 //       FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
 //        return fakeStoreProductDto.toProduct();
@@ -59,14 +74,20 @@ public class FakeStoreProductService implements ProductService{
 
         //fakeStoreProductDtoResponseEntity.getHeaders();
 
-        /* this will get the body along with data into fakeStoreProductDto object */
+        /* this will get the body along with data into fakeStoreProductDto object
         FakeStoreProductDto fakeStoreProductDto = fakeStoreProductDtoResponseEntity.getBody();
 
         if(fakeStoreProductDto == null){
             return null;
         }
 
-        return fakeStoreProductDto.toProduct();
+        return fakeStoreProductDto.toProduct(); */
+
+        Product response = fakeStoreProductDtoResponseEntity.getBody().toProduct();
+        // Cache MISS , here first we add the object into cache then return
+        redisTemplate.opsForHash().put("Products", "Products_" + id, response);
+
+        return response;
     }
 
     @Override
